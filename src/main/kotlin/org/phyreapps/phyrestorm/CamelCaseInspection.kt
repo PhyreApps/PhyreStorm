@@ -44,7 +44,11 @@ class CamelCaseInspection : LocalInspectionTool() {
                 }
                 if (element is Field) {
                     var fieldName = element.name
-                    if (!isCamelCase(fieldName)) {
+                    var skipElement = false
+                    if (element.isConstant) {
+                        skipElement = true
+                    }
+                    if (!isCamelCase(fieldName) && !skipElement) {
                         holder.registerProblem(
                             element,
                             "Property name '$fieldName' does not follow camelCase convention",
