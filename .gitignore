@@ -1,1 +1,4 @@
 /build
+/.gradle/configuration-cache
+/.gradle/8.11.1
+/.gradle/buildOutputCleanup
