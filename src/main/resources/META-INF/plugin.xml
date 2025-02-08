@@ -40,6 +40,12 @@
                          implementationClass="org.phyreapps.phyrestorm.NestedIfInspection"/>
 
         <localInspection language="PHP" groupPath="PhyreApps"
+                         shortName="NestedForInspection" displayName="PhyreApps"
+                         groupName="Performance"
+                         enabledByDefault="true" level="WARNING"
+                         implementationClass="org.phyreapps.phyrestorm.NestedForInspection"/>
+
+        <localInspection language="PHP" groupPath="PhyreApps"
                          shortName="CamelCaseInspection" displayName="PhyreApps"
                          groupName="Performance"
                          enabledByDefault="true" level="WARNING"
