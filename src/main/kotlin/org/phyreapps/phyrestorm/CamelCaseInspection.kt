@@ -33,7 +33,7 @@ class CamelCaseInspection : LocalInspectionTool() {
             override fun visitElement(element: PsiElement) {
                 if (element is Variable) {
                     var variableName = element.name
-                    if (!isCamelCase(variableName)) {
+                    if (!isCamelCase(variableName) && variableName.isNotEmpty()) {
                         holder.registerProblem(
                             element,
                             "Variable name '$variableName' does not follow camelCase convention",
@@ -78,13 +78,15 @@ class CamelCaseInspection : LocalInspectionTool() {
                     var functionName = element.name
                     var functionNameWithoutUnderscope = element.name.replace(Regex("^_+"), "")
 
-                    if (!isCamelCase(functionNameWithoutUnderscope) && !isWhitelistedMethod(functionName)) {
-                        holder.registerProblem(
-                            element,
-                            "Function name '$functionName' does not follow camelCase convention",
-                            ProblemHighlightType.ERROR,
-                            *emptyArray()
-                        )
+                    if (functionNameWithoutUnderscope.isNotEmpty()) {
+                        if (!isCamelCase(functionNameWithoutUnderscope) && !isWhitelistedMethod(functionName)) {
+                            holder.registerProblem(
+                                element,
+                                "Function name '$functionName' does not follow camelCase convention",
+                                ProblemHighlightType.ERROR,
+                                *emptyArray()
+                            )
+                        }
                     }
                 }
                 if (element is PhpClass) {
