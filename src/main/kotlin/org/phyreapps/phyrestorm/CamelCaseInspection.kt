@@ -18,7 +18,7 @@ class CamelCaseInspection : LocalInspectionTool() {
 
     private val whitelistedMethods = setOf("__construct", "__destruct", "__get", "__set")
 
-    private val whitelistedClassReferences = setOf("self", "static", "parent")
+    private val whitelistedClassReferences = setOf("self", "static", "parent", "string", "int", "float", "bool", "array", "callable", "iterable", "mixed","void", "null")
 
     override fun getShortName(): String {
         return "CamelCaseVariableInspection"
@@ -100,7 +100,7 @@ class CamelCaseInspection : LocalInspectionTool() {
                 }
                 if (element is ClassReference) {
                     var className = element.name.toString()
-                    if (!isCamelCaseFirstUpper(className)  && !isWhitelistedClassReference(className)) {
+                    if (!isCamelCaseFirstUpper(className) && !isWhitelistedClassReference(className)) {
                         holder.registerProblem(
                             element,
                             "ClassReference name '$className' does not follow CamelCase convention",
@@ -114,8 +114,8 @@ class CamelCaseInspection : LocalInspectionTool() {
         }
     }
 
-    private fun isWhitelistedClassReference(classReference: ClassReference): Boolean {
-        return whitelistedClassReferences.contains(classReference.name.toString())
+    private fun isWhitelistedClassReference(classReference: String): Boolean {
+        return whitelistedClassReferences.contains(classReference)
     }
 
     private fun isWhitelistedMethod(methodName: String): Boolean {
