@@ -33,6 +33,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
 
+        <completion.contributor language="PHP" implementationClass="org.phyreapps.phyrestorm.AutocompleteContributor" />
+
         <localInspection language="PHP" groupPath="PhyreApps"
                          shortName="NestedIfInspection" displayName="PhyreApps"
                          groupName="Performance"
