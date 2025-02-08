@@ -39,7 +39,6 @@ class NestedIfInspection : LocalInspectionTool() {
                             "Too many nested if statements (depth: $nestingDepth)",
                             ProblemHighlightType.ERROR
                         )
-                        return
                     }
                 }
                 super.visitElement(element)
