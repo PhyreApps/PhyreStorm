@@ -45,6 +45,12 @@
                          enabledByDefault="true" level="WARNING"
                          implementationClass="org.phyreapps.phyrestorm.NestedForInspection"/>
 
+   <localInspection language="PHP" groupPath="PhyreApps"
+                         shortName="InfiniteRecursionInspection" displayName="PhyreApps"
+                         groupName="Performance"
+                         enabledByDefault="true" level="WARNING"
+                         implementationClass="org.phyreapps.phyrestorm.InfiniteRecursionInspection"/>
+
         <localInspection language="PHP" groupPath="PhyreApps"
                          shortName="CamelCaseInspection" displayName="PhyreApps"
                          groupName="Performance"
