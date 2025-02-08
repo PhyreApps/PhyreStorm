@@ -2,9 +2,11 @@ package org.phyreapps.phyrestorm
 
 
 import com.intellij.codeInspection.*
-import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import org.jetbrains.annotations.NotNull
 import com.jetbrains.php.lang.psi.elements.Function
+import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import icons.PhpIcons.PhpFunction
+import org.jetbrains.annotations.NotNull
+
 
 class InfiniteRecursionInspection : LocalInspectionTool() {
 
@@ -30,17 +32,23 @@ class InfiniteRecursionInspection : LocalInspectionTool() {
                         holder.registerProblem(
                             function,
                             "Recursive function detected without a base case. This may cause infinite recursion.",
-                            ProblemHighlightType.ERROR
+                            ProblemHighlightType.WARNING
                         )
                     }
                 }
             }
 
             // Helper method to check if the function has a base case
-            fun hasBaseCase(function: Function): Boolean {
-                // Check if there's a base case (e.g., an if condition that halts the recursion)
+            private fun hasBaseCase(function: Function): Boolean {
                 val bodyText: String = function.getText()
-                return bodyText.contains("if") && bodyText.contains("<=")
+
+                // Check if there's a return statement or an exit statement in the function (common for stopping recursion)
+                if (bodyText.contains("return") || bodyText.contains("exit") || bodyText.contains("die")) {
+                    return true
+                }
+
+                // If no base case is found, return false
+                return false
             }
         }
     }
