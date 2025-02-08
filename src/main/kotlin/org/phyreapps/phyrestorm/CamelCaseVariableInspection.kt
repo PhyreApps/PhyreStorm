@@ -77,7 +77,7 @@ class CamelCaseVariableInspection : LocalInspectionTool() {
                 if (element is Function) {
                     var functionName = element.name
                     var functionNameWithoutUnderscope = element.name.replace(Regex("^_+"), "")
-                    
+
                     if (!isCamelCase(functionNameWithoutUnderscope) && !isWhitelistedMethod(functionName)) {
                         holder.registerProblem(
                             element,
