@@ -3,22 +3,22 @@ package org.phyreapps.phyrestorm
 
 import com.intellij.codeInspection.*
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiRecursiveElementVisitor
-import org.jetbrains.annotations.Nls
 
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
-import com.intellij.openapi.diagnostic.Logger
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.Function
+import com.jetbrains.php.lang.psi.elements.PhpClass
 
 
-class CamelCaseVariableInspection : LocalInspectionTool() {
+class CamelCaseInspection : LocalInspectionTool() {
 
     private val whitelistedMethods = setOf("__construct", "__destruct", "__get", "__set")
+
+    private val whitelistedClassReferences = setOf("self", "static", "parent")
 
     override fun getShortName(): String {
         return "CamelCaseVariableInspection"
@@ -87,14 +87,47 @@ class CamelCaseVariableInspection : LocalInspectionTool() {
                         )
                     }
                 }
+                if (element is PhpClass) {
+                    var className = element.name
+                    if (!isCamelCaseFirstUpper(className)) {
+                        holder.registerProblem(
+                            element,
+                            "Class name '$className' does not follow CamelCase convention",
+                            ProblemHighlightType.ERROR,
+                            *emptyArray()
+                        )
+                    }
+                }
+                if (element is ClassReference) {
+                    var className = element.name.toString()
+                    if (!isCamelCaseFirstUpper(className)  && !isWhitelistedClassReference(className)) {
+                        holder.registerProblem(
+                            element,
+                            "ClassReference name '$className' does not follow CamelCase convention",
+                            ProblemHighlightType.ERROR,
+                            *emptyArray()
+                        )
+                    }
+                }
                 super.visitElement(element)
             }
         }
     }
 
+    private fun isWhitelistedClassReference(classReference: ClassReference): Boolean {
+        return whitelistedClassReferences.contains(classReference.name.toString())
+    }
+
     private fun isWhitelistedMethod(methodName: String): Boolean {
         // Check if the method is in the whitelist (like __construct, __destruct, etc.)
         return whitelistedMethods.contains(methodName)
+    }
+
+    // Function to check if the class name follows CamelCase
+    private fun isCamelCaseFirstUpper(name: String): Boolean {
+        // Starts with uppercase, no underscores
+        val camelCaseRegex = "^[A-Z][a-zA-Z0-9]*$".toRegex()
+        return name.matches(camelCaseRegex)
     }
 
     private fun isCamelCase(variableName: String): Boolean {
