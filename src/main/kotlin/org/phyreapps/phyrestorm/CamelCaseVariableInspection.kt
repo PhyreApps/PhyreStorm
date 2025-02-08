@@ -5,7 +5,6 @@ import com.intellij.codeInspection.*
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiRecursiveElementVisitor
-import com.jetbrains.php.lang.psi.elements.If
 import org.jetbrains.annotations.Nls
 
 
@@ -13,11 +12,13 @@ import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.openapi.diagnostic.Logger
-import com.jetbrains.php.lang.psi.elements.Field
-import com.jetbrains.php.lang.psi.elements.Variable
+import com.jetbrains.php.lang.psi.elements.*
+import com.jetbrains.php.lang.psi.elements.Function
 
 
 class CamelCaseVariableInspection : LocalInspectionTool() {
+
+    private val whitelistedMethods = setOf("__construct", "__destruct", "__get", "__set")
 
     override fun getShortName(): String {
         return "CamelCaseVariableInspection"
@@ -52,9 +53,48 @@ class CamelCaseVariableInspection : LocalInspectionTool() {
                         )
                     }
                 }
+                if (element is Method) {
+                    var methodName = element.name
+                    var methodNameWithoutUnderscope = element.name.replace(Regex("^_+"), "")
+                    // Check private methods for _ prefix
+                    if (element.access == PhpModifier.Access.PRIVATE && !methodName.startsWith("_")) {
+                        holder.registerProblem(
+                            element,
+                            "Private method name '$methodName' must start with '_'",
+                            ProblemHighlightType.ERROR,
+                            *emptyArray()
+                        )
+                    }
+                    if (!isCamelCase(methodNameWithoutUnderscope) && !isWhitelistedMethod(methodName)) {
+                        holder.registerProblem(
+                            element,
+                            "Method name '$methodNameWithoutUnderscope' does not follow camelCase convention",
+                            ProblemHighlightType.ERROR,
+                            *emptyArray()
+                        )
+                    }
+                }
+                if (element is Function) {
+                    var functionName = element.name
+                    var functionNameWithoutUnderscope = element.name.replace(Regex("^_+"), "")
+                    
+                    if (!isCamelCase(functionNameWithoutUnderscope) && !isWhitelistedMethod(functionName)) {
+                        holder.registerProblem(
+                            element,
+                            "Function name '$functionName' does not follow camelCase convention",
+                            ProblemHighlightType.ERROR,
+                            *emptyArray()
+                        )
+                    }
+                }
                 super.visitElement(element)
             }
         }
+    }
+
+    private fun isWhitelistedMethod(methodName: String): Boolean {
+        // Check if the method is in the whitelist (like __construct, __destruct, etc.)
+        return whitelistedMethods.contains(methodName)
     }
 
     private fun isCamelCase(variableName: String): Boolean {
