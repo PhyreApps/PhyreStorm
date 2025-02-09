@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.phyreapps"
-version = "1.1-SNAPSHOT"
+version = "1.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -14,11 +14,11 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2024.1.7")
+    version.set("2024.3.2.1")
     type.set("PS") // Target IDE Platform
 
     plugins.set(listOf(
-        "com.jetbrains.php:241.19416.15"
+        "com.jetbrains.php:243.23654.168"
     ))
 }
 
