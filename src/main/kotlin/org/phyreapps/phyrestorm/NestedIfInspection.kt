@@ -27,7 +27,7 @@ class NestedIfInspection : LocalInspectionTool() {
     }
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : PsiRecursiveElementVisitor() {
+        return object : PsiElementVisitor() {
             override fun visitElement(element: PsiElement) {
                 // Check if the element is an If statement
                 if (element is If) {

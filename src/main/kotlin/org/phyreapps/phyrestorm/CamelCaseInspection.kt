@@ -29,7 +29,7 @@ class CamelCaseInspection : LocalInspectionTool() {
     }
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : PsiRecursiveElementVisitor() {
+        return object : PsiElementVisitor() {
             override fun visitElement(element: PsiElement) {
                 if (element is Variable) {
                     var variableName = element.name

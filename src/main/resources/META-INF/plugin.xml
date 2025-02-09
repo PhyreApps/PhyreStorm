@@ -33,7 +33,7 @@
 
 
     <extensions defaultExtensionNs="com.intellij">
-        
+
         <localInspection language="PHP" groupPath="PhyreApps"
                          shortName="NestedIfInspection" displayName="PhyreApps"
                          groupName="Performance"
