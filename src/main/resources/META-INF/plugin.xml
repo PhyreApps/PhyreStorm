@@ -31,10 +31,9 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
 
 
+
     <extensions defaultExtensionNs="com.intellij">
-
-        <completion.contributor language="PHP" implementationClass="org.phyreapps.phyrestorm.AutocompleteContributor" />
-
+        
         <localInspection language="PHP" groupPath="PhyreApps"
                          shortName="NestedIfInspection" displayName="PhyreApps"
                          groupName="Performance"
