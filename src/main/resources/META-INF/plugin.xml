@@ -66,6 +66,6 @@
 
     </extensions>
 
-    <idea-version since-build="241.0" until-build="241.*"/>
+    <idea-version since-build="242.0" until-build="242.*"/>
 
 </idea-plugin>
