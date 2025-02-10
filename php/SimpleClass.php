@@ -22,6 +22,7 @@ $xxx = 5;
 
 $ebasi_da = 5;
 
+echo $ebasi_da;
 
 function daiMusega()
 {
