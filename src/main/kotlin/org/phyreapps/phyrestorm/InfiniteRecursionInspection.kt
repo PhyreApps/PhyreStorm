@@ -4,7 +4,6 @@ package org.phyreapps.phyrestorm
 import com.intellij.codeInspection.*
 import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import icons.PhpIcons.PhpFunction
 import org.jetbrains.annotations.NotNull
 
 

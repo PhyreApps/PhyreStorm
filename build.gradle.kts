@@ -8,6 +8,9 @@ plugins {
 group = "org.phyreapps"
 version = "1.2-SNAPSHOT"
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
 
 repositories {
 
