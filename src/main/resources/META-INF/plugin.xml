@@ -35,6 +35,12 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <localInspection language="PHP" groupPath="PhyreApps"
+                         shortName="UnusedVariableInspection" displayName="PhyreApps"
+                         groupName="Performance"
+                         enabledByDefault="true" level="WARNING"
+                         implementationClass="org.phyreapps.phyrestorm.UnusedVariableInspection"/>
+
+        <localInspection language="PHP" groupPath="PhyreApps"
                          shortName="NestedIfInspection" displayName="PhyreApps"
                          groupName="Performance"
                          enabledByDefault="true" level="WARNING"

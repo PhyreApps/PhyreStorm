@@ -21,7 +21,7 @@ class CamelCaseInspection : LocalInspectionTool() {
     private val whitelistedClassReferences = setOf("self", "static", "parent", "string", "int", "float", "bool", "array", "callable", "iterable", "mixed","void", "null")
 
     override fun getShortName(): String {
-        return "CamelCaseVariableInspection"
+        return "CamelCaseInspection"
     }
 
     override fun getDisplayName(): String {
