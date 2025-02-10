@@ -20,6 +20,19 @@ class CamelCaseInspection : LocalInspectionTool() {
 
     private val whitelistedClassReferences = setOf("self", "static", "parent", "string", "int", "float", "bool", "array", "callable", "iterable", "mixed","void", "null")
 
+    private val whitelistedVariables = hashSetOf(
+        "GLOBALS",
+        "_SERVER",
+        "_REQUEST",
+        "_POST",
+        "_GET",
+        "_FILES",
+        "_ENV",
+        "_COOKIE",
+        "_SESSION"
+    )
+
+
     override fun getShortName(): String {
         return "CamelCaseInspection"
     }
@@ -33,10 +46,10 @@ class CamelCaseInspection : LocalInspectionTool() {
             override fun visitElement(element: PsiElement) {
                 if (element is Variable) {
                     var variableName = element.name
-                    if (!isCamelCase(variableName) && variableName.isNotEmpty()) {
+                    if (!isCamelCase(variableName) && variableName.isNotEmpty() && !isWhitelistedVariable(variableName)) {
                         holder.registerProblem(
                             element,
-                            "Variable name '$variableName' does not follow camelCase convention",
+                            "\uD83D\uDD25 [PHYRE] Variable name '$variableName' does not follow camelCase convention",
                             ProblemHighlightType.ERROR,
                             *emptyArray()
                         )
@@ -51,7 +64,7 @@ class CamelCaseInspection : LocalInspectionTool() {
                     if (!isCamelCase(fieldName) && !skipElement) {
                         holder.registerProblem(
                             element,
-                            "Property name '$fieldName' does not follow camelCase convention",
+                            "\uD83D\uDD25 [PHYRE] Property name '$fieldName' does not follow camelCase convention",
                             ProblemHighlightType.ERROR,
                             *emptyArray()
                         )
@@ -64,7 +77,7 @@ class CamelCaseInspection : LocalInspectionTool() {
                     if (element.access == PhpModifier.Access.PRIVATE && !methodName.startsWith("_")) {
                         holder.registerProblem(
                             element,
-                            "Private method name '$methodName' must start with '_'",
+                            "\uD83D\uDD25 [PHYRE] Private method name '$methodName' must start with '_'",
                             ProblemHighlightType.ERROR,
                             *emptyArray()
                         )
@@ -72,7 +85,7 @@ class CamelCaseInspection : LocalInspectionTool() {
                     if (!isCamelCase(methodNameWithoutUnderscope) && !isWhitelistedMethod(methodName)) {
                         holder.registerProblem(
                             element,
-                            "Method name '$methodNameWithoutUnderscope' does not follow camelCase convention",
+                            "\uD83D\uDD25 [PHYRE] Method name '$methodNameWithoutUnderscope' does not follow camelCase convention",
                             ProblemHighlightType.ERROR,
                             *emptyArray()
                         )
@@ -86,7 +99,7 @@ class CamelCaseInspection : LocalInspectionTool() {
                         if (!isCamelCase(functionNameWithoutUnderscope) && !isWhitelistedMethod(functionName)) {
                             holder.registerProblem(
                                 element,
-                                "Function name '$functionName' does not follow camelCase convention",
+                                "\uD83D\uDD25 [PHYRE] Function name '$functionName' does not follow camelCase convention",
                                 ProblemHighlightType.ERROR,
                                 *emptyArray()
                             )
@@ -98,7 +111,7 @@ class CamelCaseInspection : LocalInspectionTool() {
                     if (!isCamelCaseFirstUpper(className)) {
                         holder.registerProblem(
                             element,
-                            "Class name '$className' does not follow CamelCase convention",
+                            "\uD83D\uDD25 [PHYRE] Class name '$className' does not follow CamelCase convention",
                             ProblemHighlightType.ERROR,
                             *emptyArray()
                         )
@@ -109,7 +122,7 @@ class CamelCaseInspection : LocalInspectionTool() {
                     if (!isCamelCaseFirstUpper(className) && !isWhitelistedClassReference(className)) {
                         holder.registerProblem(
                             element,
-                            "ClassReference name '$className' does not follow CamelCase convention",
+                            "\uD83D\uDD25 [PHYRE] ClassReference name '$className' does not follow CamelCase convention",
                             ProblemHighlightType.ERROR,
                             *emptyArray()
                         )
@@ -127,6 +140,10 @@ class CamelCaseInspection : LocalInspectionTool() {
     private fun isWhitelistedMethod(methodName: String): Boolean {
         // Check if the method is in the whitelist (like __construct, __destruct, etc.)
         return whitelistedMethods.contains(methodName)
+    }
+
+    private fun isWhitelistedVariable(variableName: String): Boolean {
+        return whitelistedVariables.contains(variableName)
     }
 
     // Function to check if the class name follows CamelCase

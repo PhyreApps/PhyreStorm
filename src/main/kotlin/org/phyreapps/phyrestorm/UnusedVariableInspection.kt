@@ -51,7 +51,7 @@ class UnusedVariableInspection : LocalInspectionTool() {
             if (!usedVariables.contains(key)) {
                 holder.registerProblem(
                     value as PsiElement,
-                    "Unused variable: $key",
+                    "\uD83D\uDD25 [PHYRE] Unused variable: $key",
                     ProblemHighlightType.ERROR
                 )
             }

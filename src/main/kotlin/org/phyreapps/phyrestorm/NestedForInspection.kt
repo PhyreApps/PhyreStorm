@@ -33,10 +33,10 @@ class NestedForInspection : LocalInspectionTool() {
                 if (element is For) {
                     val (nestingDepth) = getNestingDepth(element)
                     if (nestingDepth >= maxIfDept) {
-                        log.info("Too many nested for statements detected at depth $nestingDepth: ${element.text}")
+                        log.info("\uD83D\uDD25 [PHYRE] Too many nested for statements detected at depth $nestingDepth: ${element.text}")
                         holder.registerProblem(
                             element,
-                            "Too many nested for statements (depth: $nestingDepth)",
+                            "\uD83D\uDD25 [PHYRE] Too many nested for statements (depth: $nestingDepth)",
                             ProblemHighlightType.ERROR
                         )
                     }

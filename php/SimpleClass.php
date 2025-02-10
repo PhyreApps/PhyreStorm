@@ -12,6 +12,8 @@ class SimpleClass
 
 }
 
+echo $_GET['qko'];
+
 $simple_var = 4;
 
 $ebasi = 4;
